@@ -1,7 +1,7 @@
 <script setup>
 import { watch, nextTick, ref } from 'vue'
-import { DEFAULT_TITLE_CONTENT, DEFAULT_SUBTITLE_CONTENT, DEFAULT_TEXT_CONTENT, DEFAULT_IMAGE_CONTENT } from '@/constants'
 import { parseTextBlocks } from '@/utils/textParser'
+import { useRoute } from 'vue-router'
 
 import CodeBlock from '@/components/CodeBlock.vue'
 
@@ -14,6 +14,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['toggle-publish', 'delete-template'])
+
+const route = useRoute()
 
 const isCopied = ref(false)
 const copyTemplateContent = async () => {
@@ -79,6 +81,7 @@ watch(
             <div class="preview-block">
                 <div class="preview-meta">
                     <div class="control-buttons">
+                        <router-link :to="`/template/${route.params.id}`" class="control-btn">[ ➔ Открыть ]</router-link>
                         <button @click="copyTemplateContent" class="control-btn copy-btn" :class="{ copied: isCopied }">
                             [ {{ isCopied ? '✔ Скопировано' : '⮺ Копировать' }} ]
                         </button>
@@ -281,9 +284,7 @@ watch(
 .control-btn {
     cursor: pointer;
 }
-.edit-btn:hover,
-.publish-btn:hover,
-.copy-btn:hover {
+.control-buttons > *:hover {
     color: black;
 }
 .del-btn:hover {
