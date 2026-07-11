@@ -132,6 +132,10 @@ onMounted(async () => {
     editableTemplate.value = JSON.parse(JSON.stringify(templatesStore.currentTemplate))
     editableTemplate.value.content = editableTemplate.value.content.map((block, index) => {
         block.id = Date.now() + index
+        // Корректные скобки и амперсанды в редакторе
+        if (block.type === 'code' && block.data) {
+            block.data = block.data.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+        }
         return block
     })
     titleBlock.value.data = editableTemplate.value.title

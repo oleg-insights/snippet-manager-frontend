@@ -18,7 +18,8 @@ hljs.registerLanguage('xml', xml)
 hljs.registerLanguage('css', css)
 
 const codeHighlight = (block) => {
-    const raw = block.data.trim()
+    let raw = block.data.trim()
+    raw = block.data.trim().replace(/&lt;/g, '<').replace(/&gt;/g, '>')
     const result = hljs.highlightAuto(raw)
     return result
 }
