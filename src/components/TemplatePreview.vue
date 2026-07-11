@@ -2,6 +2,7 @@
 import { watch, nextTick, ref } from 'vue'
 import { parseTextBlocks } from '@/utils/textParser'
 import { useRoute } from 'vue-router'
+import { DEFAULT_IMAGE_CONTENT } from '@/constants'
 
 import CodeBlock from '@/components/CodeBlock.vue'
 
@@ -102,8 +103,8 @@ watch(
                 :class="{ highlight: focusedBlockId === block.id }"
             >
                 <div :class="`preview-${block.type}`">
-                    <h1 v-if="block.type === 'title'">{{ block.data || DEFAULT_TITLE_CONTENT }}</h1>
-                    <h2 v-if="block.type === 'subtitle'">{{ block.data || DEFAULT_SUBTITLE_CONTENT }}</h2>
+                    <h1 v-if="block.type === 'title'">{{ block.data }}</h1>
+                    <h2 v-if="block.type === 'subtitle'">{{ block.data }}</h2>
 
                     <img
                         v-if="block.type === 'image'"
@@ -112,7 +113,7 @@ watch(
                     />
 
                     <template v-if="block.type === 'text'">
-                        <div v-for="textBlock in parseTextBlocks(block.data || DEFAULT_TEXT_CONTENT)" :key="textBlock">
+                        <div v-for="textBlock in parseTextBlocks(block.data)" :key="textBlock">
                             <p v-if="textBlock.type === 'p'" :class="{ 'mt-3': textBlock.gap }" v-html="textBlock.data"></p>
                             <ul v-else-if="textBlock.type === 'ul'" :class="{ 'mt-4': textBlock.gap }">
                                 <li v-for="item in textBlock.data" :key="item" v-html="item"></li>
