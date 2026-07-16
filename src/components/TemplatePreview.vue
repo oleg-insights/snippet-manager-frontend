@@ -82,7 +82,7 @@ watch(
             <div class="preview-block">
                 <div class="preview-meta">
                     <div class="control-buttons">
-                        <router-link :to="`/template/${route.params.id}`" class="control-btn">[ ➔ Открыть ]</router-link>
+                        <router-link v-if="route.params.id" :to="`/template/${route.params.id}`" class="control-btn">[ ➔ Открыть ]</router-link>
                         <button @click="copyTemplateContent" class="control-btn copy-btn" :class="{ copied: isCopied }">
                             [ {{ isCopied ? '✔ Скопировано' : '⮺ Копировать' }} ]
                         </button>
