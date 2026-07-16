@@ -61,7 +61,7 @@ const toggleFocusId = (id) => {
                     v-else-if="block.type === 'text' || block.type === 'code'"
                     @focus="toggleFocusId(block.id)"
                     @blur="emit('focus-out')"
-                    rows="4"
+                    rows="2"
                     v-model="block.data"
                     placeholder="Текст"
                 ></textarea>
@@ -74,6 +74,10 @@ const toggleFocusId = (id) => {
 
 <style scoped>
 /* Блоки редактора (поля) */
+textarea {
+    resize: vertical;
+}
+
 .editor-block {
     background: white;
     border-radius: 16px;
