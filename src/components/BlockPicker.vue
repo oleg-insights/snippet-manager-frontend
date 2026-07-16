@@ -1,12 +1,15 @@
 <script setup>
+import { watch, nextTick, ref } from 'vue'
 import { BLOCK_TYPES } from '@/constants/block-types'
 
-defineProps({
+const props = defineProps({
     block: Object,
     index: Number
 })
 
 const emit = defineEmits(['toggle-picker', 'add-block'])
+
+const pickerContainerRef = ref(null)
 
 const togglePicker = (block) => {
     emit('toggle-picker', block)
@@ -15,6 +18,20 @@ const togglePicker = (block) => {
 const addBlock = (type, index) => {
     emit('add-block', type, index)
 }
+
+watch(
+    () => props.block.showPicker,
+    (newVal) => {
+        if (newVal) {
+            nextTick(() => {
+                pickerContainerRef.value?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                })
+            })
+        }
+    }
+)
 </script>
 
 <template>
@@ -29,7 +46,7 @@ const addBlock = (type, index) => {
         </div>
 
         <!-- Контейнер с типами -->
-        <div class="picker-container" :class="{ active: block.showPicker }">
+        <div ref="pickerContainerRef" class="picker-container" :class="{ active: block.showPicker }">
             <div class="picker-grid">
                 <div v-for="type in ['subtitle', 'text', 'image', 'code']" :key="type" class="picker-item" @click="addBlock(type, index)">
                     <span class="icon">{{ BLOCK_TYPES[type]?.icon || BLOCK_TYPES['default']?.icon }}</span>
