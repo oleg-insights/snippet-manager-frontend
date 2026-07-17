@@ -159,7 +159,7 @@ const switchToLogin = () => {
                         </div>
                         <div class="form-group">
                             <label>Пароль</label>
-                            <input v-model="loginForm.password" type="text" required placeholder="••••••••" @blur="validateLoginPassword" />
+                            <input v-model="loginForm.password" type="password" required placeholder="••••••••" @blur="validateLoginPassword" />
                             <p v-if="loginForm.passwordError" class="error">{{ loginForm.passwordError }}</p>
                         </div>
                         <button type="submit" class="btn-primary" :disabled="authStore.isLoggingIn">
@@ -186,12 +186,12 @@ const switchToLogin = () => {
                         </div>
                         <div class="form-group">
                             <label>Пароль</label>
-                            <input v-model="registerForm.password" type="text" required placeholder="••••••••" @blur="validateRegisterPassword" />
+                            <input v-model="registerForm.password" type="password" required placeholder="••••••••" @blur="validateRegisterPassword" />
                             <p v-if="registerForm.passwordError" class="error">{{ registerForm.passwordError }}</p>
                         </div>
                         <div class="form-group">
                             <label>Подтверждение пароля</label>
-                            <input v-model="registerForm.confirm" type="text" required placeholder="••••••••" />
+                            <input v-model="registerForm.confirm" type="password" required placeholder="••••••••" />
                         </div>
                         <button type="submit" class="btn-primary" :disabled="authStore.isRegistering">
                             {{ authStore.isRegistering ? 'Регистрация...' : 'Зарегистрироваться' }}
