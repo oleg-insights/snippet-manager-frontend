@@ -25,7 +25,8 @@ watch(
     async () => {
         try {
             await templatesStore.getTemplates()
-            await tagsStore.getTags({ sortBy: 'name', order: 'asc' })
+            await tagsStore.getTags({ limit: 0, sortBy: 'name', order: 'asc' })
+            const _tags = [...tagsStore.tags]
         } catch (err) {
             console.error(err.message)
         }

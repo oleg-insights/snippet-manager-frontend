@@ -24,13 +24,15 @@ const displayedTags = computed(() => {
 
     const filtered = allTags.filter((tag) => !tag.isParent)
 
-    return filtered.sort((a, b) => {
+    const result = filtered.sort((a, b) => {
         if (a.isSelected && !b.isSelected) return -1
         if (!a.isSelected && b.isSelected) return 1
         if (a.isDisabled && !b.isDisabled) return 1
         if (!a.isDisabled && b.isDisabled) return -1
         return 0
     })
+
+    return result
 })
 
 const emit = defineEmits(['toggle-tag'])
