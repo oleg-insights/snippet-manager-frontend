@@ -54,7 +54,7 @@ const toggleFocusId = (id) => {
                     @focus="toggleFocusId(block.id)"
                     @blur="emit('focus-out')"
                     type="text"
-                    v-model="block.content"
+                    v-model="block.data"
                     placeholder="https://image.jpg"
                 />
                 <textarea

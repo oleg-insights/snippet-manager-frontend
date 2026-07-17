@@ -108,7 +108,11 @@ watch(
 
                     <img
                         v-if="block.type === 'image'"
-                        @error="(e) => (e.target.src = DEFAULT_IMAGE_CONTENT)"
+                        @error="
+                            (e) => {
+                                e.target.src = DEFAULT_IMAGE_CONTENT
+                            }
+                        "
                         :src="block.data || DEFAULT_IMAGE_CONTENT"
                     />
 
