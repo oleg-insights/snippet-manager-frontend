@@ -24,7 +24,7 @@ watch(
     () => authStore.user,
     async () => {
         try {
-            await templatesStore.getTemplates()
+            await templatesStore.getTemplates({ limit: 0, sortBy: 'createdAt', order: 'desc' })
             await tagsStore.getTags({ limit: 0, sortBy: 'name', order: 'asc' })
             const _tags = [...tagsStore.tags]
         } catch (err) {
