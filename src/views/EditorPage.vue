@@ -27,13 +27,20 @@ const titleBlock = ref({
 })
 
 const focusedBlockId = ref(null)
+const syncedBlockId = ref(null)
 
 const toggleFocusId = (id) => {
     focusedBlockId.value = id
 }
+const toggleSyncId = (id) => {
+    syncedBlockId.value = id
+}
 
 const focusOut = () => {
     focusedBlockId.value = null
+}
+const syncOut = () => {
+    syncedBlockId.value = null
 }
 
 const addTag = (tag) => {
@@ -152,6 +159,7 @@ onMounted(async () => {
             <TemplateEditorBlockList
                 :title-block="titleBlock"
                 :blocks="editableTemplate.content"
+                :synced-block-id="syncedBlockId"
                 @add-block="addBlock"
                 @move-block="moveBlock"
                 @del-block="delBlock"
@@ -173,6 +181,8 @@ onMounted(async () => {
                 :focused-block-id="focusedBlockId"
                 @toggle-publish="togglePublish"
                 @delete-template="deleteTemplate"
+                @toggle-sync-id="toggleSyncId"
+                @sync-out="syncOut"
             />
         </div>
     </div>

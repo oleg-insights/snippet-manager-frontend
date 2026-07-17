@@ -1,9 +1,12 @@
 <script setup>
+import { watch, nextTick } from 'vue'
+
 import TemplateEditorBlock from './TemplateEditorBlock.vue'
 
 const props = defineProps({
     titleBlock: Object,
-    blocks: Array
+    blocks: Array,
+    syncedBlockId: Number
 })
 
 const emit = defineEmits(['add-block', 'move-block', 'del-block', 'toggle-focus-id', 'focus-out', 'save-template'])
@@ -32,6 +35,21 @@ const toggleBlockPicker = (block) => {
 const toggleFocusId = (id) => {
     emit('toggle-focus-id', id)
 }
+
+const syncedBlockRefs = {}
+const setSyncedBlockRef = (el, block) => {
+    if (el) syncedBlockRefs[block.id] = el
+}
+
+watch(
+    () => props.syncedBlockId,
+    (newId) => {
+        if (!newId) return
+        nextTick(() => {
+            syncedBlockRefs[newId]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+        })
+    }
+)
 </script>
 
 <template>
@@ -41,6 +59,8 @@ const toggleFocusId = (id) => {
             <TemplateEditorBlock
                 :block="titleBlock"
                 :index="0"
+                :synced="syncedBlockId === titleBlock.id"
+                :setRef="(el) => setSyncedBlockRef(el, titleBlock)"
                 @add-block="addBlock"
                 @toggle-picker="toggleBlockPicker"
                 @toggle-focus-id="toggleFocusId"
@@ -54,6 +74,8 @@ const toggleFocusId = (id) => {
                 :index="index + 1"
                 :can-move-up="index > 0"
                 :can-move-down="index < blocks.length - 1"
+                :synced="syncedBlockId === block.id"
+                :setRef="(el) => setSyncedBlockRef(el, block)"
                 @add-block="addBlock"
                 @move-block="moveBlock"
                 @del-block="delBlock"

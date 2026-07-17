@@ -26,13 +26,20 @@ const titleBlock = ref({
 })
 
 const focusedBlockId = ref(null)
+const syncedBlockId = ref(null)
 
 const toggleFocusId = (id) => {
     focusedBlockId.value = id
 }
+const toggleSyncId = (id) => {
+    syncedBlockId.value = id
+}
 
 const focusOut = () => {
     focusedBlockId.value = null
+}
+const syncOut = () => {
+    syncedBlockId.value = null
 }
 
 const addTag = (tag) => {
@@ -103,6 +110,7 @@ onMounted(async () => {
             <TemplateEditorBlockList
                 :titleBlock="titleBlock"
                 :blocks="template.content"
+                :synced-block-id="syncedBlockId"
                 @add-block="addBlock"
                 @move-block="moveBlock"
                 @del-block="delBlock"
@@ -116,7 +124,14 @@ onMounted(async () => {
         <div class="preview-panel">
             <div class="section-title">👁️ ПРЕДПРОСМОТР</div>
 
-            <TemplatePreview :title-block="titleBlock" :blocks="template.content" :is-editor="false" :focused-block-id="focusedBlockId" />
+            <TemplatePreview
+                :title-block="titleBlock"
+                :blocks="template.content"
+                :is-editor="false"
+                :focused-block-id="focusedBlockId"
+                @toggle-sync-id="toggleSyncId"
+                @sync-out="syncOut"
+            />
         </div>
     </div>
 </template>

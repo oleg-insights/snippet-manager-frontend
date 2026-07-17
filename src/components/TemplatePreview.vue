@@ -1,5 +1,5 @@
 <script setup>
-import { watch, nextTick, ref } from 'vue'
+import { watch, nextTick, ref, onMounted, onBeforeUnmount } from 'vue'
 import { parseTextBlocks } from '@/utils/textParser'
 import { useRoute } from 'vue-router'
 import { DEFAULT_IMAGE_CONTENT } from '@/constants'
@@ -14,7 +14,7 @@ const props = defineProps({
     focusedBlockId: Number
 })
 
-const emit = defineEmits(['toggle-publish', 'delete-template'])
+const emit = defineEmits(['toggle-publish', 'delete-template', 'toggle-sync-id', 'sync-out'])
 
 const route = useRoute()
 
@@ -60,6 +60,15 @@ const deleteTemplate = () => {
     emit('delete-template')
 }
 
+const toggleSyncId = (id) => {
+    emit('toggle-sync-id', id)
+}
+
+const syncOut = (event) => {
+    if (event.target.closest('.sync-button')) return
+    emit('sync-out')
+}
+
 const focusedBlockRefs = {}
 const setFocusedBlockRef = (el, block) => {
     if (el) focusedBlockRefs[block.id] = el
@@ -74,6 +83,14 @@ watch(
         })
     }
 )
+
+onMounted(() => {
+    document.addEventListener('click', syncOut)
+})
+
+onBeforeUnmount(() => {
+    document.removeEventListener('click', syncOut)
+})
 </script>
 
 <template>
@@ -102,6 +119,13 @@ watch(
                 class="preview-block"
                 :class="{ highlight: focusedBlockId === block.id }"
             >
+                <div class="sync-button">
+                    <div @click="toggleSyncId(block.id)" class="colored">
+                        <svg viewBox="0 0 24 24" width="18" height="18" style="display: block">
+                            <path d="M12 2 L6 8 L10 8 L10 16 L6 16 L12 22 L18 16 L14 16 L14 8 L18 8 Z" fill="currentColor" />
+                        </svg>
+                    </div>
+                </div>
                 <div :class="`preview-${block.type}`">
                     <h1 v-if="block.type === 'title'">{{ block.data }}</h1>
                     <h2 v-if="block.type === 'subtitle'">{{ block.data }}</h2>
@@ -161,14 +185,43 @@ watch(
     transition: all 0.1s;
     border-radius: 12px;
     padding: 8px;
+    position: relative;
+}
+.sync-button {
+    position: absolute;
+    left: -3rem;
+    top: 0rem;
+    width: 3rem;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 0.5rem;
+}
+.sync-button > .colored {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    background: #deebfb;
+    height: 100%;
+    width: 100%;
+    color: #6470839c;
+    cursor: pointer;
+    border-radius: 0.8rem;
+    transition: box-shadow 0.25s ease;
+    box-shadow: 0 0 0 1px rgba(222, 235, 251, 0.3);
+}
+.sync-button > .colored:hover {
+    box-shadow: 0 0 0 3px rgba(222, 235, 251, 0.4);
+}
+.preview-block:hover .sync-button > .colored {
+    visibility: visible;
 }
 .preview-block.highlight {
     background: #fef9c3;
     border-left: 4px solid #eab308;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-.preview-title {
-    margin-bottom: 0.1rem;
 }
 .preview-title h1 {
     font-size: 1.25rem;
@@ -205,9 +258,9 @@ watch(
     color: #3b82f6;
 }
 .preview-image img {
+    display: block;
     max-width: 100%;
     border-radius: 12px;
-    margin: 8px 0;
 }
 .preview-code {
     background: #f9fafb;

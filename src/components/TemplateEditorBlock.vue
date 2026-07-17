@@ -7,7 +7,9 @@ const props = defineProps({
     block: Object,
     index: Number,
     canMoveUp: Boolean,
-    canMoveDown: Boolean
+    canMoveDown: Boolean,
+    setRef: Function,
+    synced: Boolean
 })
 const emit = defineEmits(['add-block', 'move-block', 'del-block', 'toggle-picker', 'toggle-focus-id', 'focus-out'])
 
@@ -30,7 +32,7 @@ const toggleFocusId = (id) => {
 
 <template>
     <div class="block-wrapper">
-        <div class="editor-block">
+        <div class="editor-block" :ref="setRef" :class="{ highlight: synced }">
             <!-- Блок -->
             <div class="editor-block-header">
                 <span class="block-label">{{ (BLOCK_TYPES[block.type].label || block.type).toUpperCase() }}</span>
@@ -145,5 +147,10 @@ textarea {
     outline: none;
     border-color: #3b82f6;
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.highlight input,
+.highlight textarea {
+    box-shadow: 0 0 0 3px #3b82f633;
 }
 </style>
