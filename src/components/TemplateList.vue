@@ -11,7 +11,10 @@ const authStore = useAuthStore()
         <div v-if="templatesStore.templates.length" class="templates-scroll">
             <div class="template-list">
                 <router-link v-for="tpl in templatesStore.templates" :key="tpl.id" :to="`/template/${tpl.id}`" class="template-item">
-                    {{ tpl.title }}
+                    <div>{{ tpl.title }}</div>
+                    <div class="template-meta">
+                        <span class="template-meta-author">👤 {{ tpl.author.name }}</span>
+                    </div>
                 </router-link>
             </div>
         </div>
@@ -62,6 +65,11 @@ const authStore = useAuthStore()
     cursor: default;
     color: #0f172a;
     cursor: pointer;
+}
+.template-meta {
+    font-size: 0.6rem;
+    color: #94a3b8;
+    margin-top: 0.2rem;
 }
 .template-item:hover {
     background: #f1f5f9;
