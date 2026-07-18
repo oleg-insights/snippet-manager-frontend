@@ -22,6 +22,9 @@ const tagNames = computed(() => templatesStore.currentTemplate?.tags?.map((tag) 
 
 const authStore = useAuthStore()
 
+const isAuthor = computed(() => template.value?.author?.id && template.value.author.id === authStore.user?.id)
+const isAdmin = computed(() => authStore.user?.role === 'ADMIN')
+
 const loadTemplate = async (id) => {
     if (!id) return
 
@@ -133,27 +136,13 @@ onMounted(() => {
                                 <button @click="copyTemplateContent" class="control-btn copy-btn" :class="{ copied: isCopied }">
                                     [ {{ isCopied ? '✔ Скопировано' : '⮺ Копировать' }} ]
                                 </button>
-                                <router-link
-                                    v-if="template.author?.id && template.author.id === authStore.user?.id"
-                                    :to="`/template/${templateId}/edit`"
-                                    class="control-btn edit-btn"
-                                >
+                                <router-link v-if="isAuthor" :to="`/template/${templateId}/edit`" class="control-btn edit-btn">
                                     [ ✎ Редактировать ]
                                 </router-link>
-                                <button
-                                    v-if="template.author?.id && template.author.id === authStore.user?.id"
-                                    @click="togglePublish"
-                                    class="control-btn publish-btn"
-                                >
+                                <button v-if="isAuthor" @click="togglePublish" class="control-btn publish-btn">
                                     [ {{ template.isPublic ? '🔒︎ Снять с публикации' : '🔓︎ Опубликовать' }} ]
                                 </button>
-                                <button
-                                    v-if="template.author?.id && template.author.id === authStore.user?.id"
-                                    @click="deleteTemplate"
-                                    class="control-btn del-btn"
-                                >
-                                    [ ✖ Удалить ]
-                                </button>
+                                <button v-if="isAuthor || isAdmin" @click="deleteTemplate" class="control-btn del-btn">[ ✖ Удалить ]</button>
                             </div>
                         </div>
                     </div>
