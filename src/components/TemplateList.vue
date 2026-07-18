@@ -60,7 +60,7 @@ const authStore = useAuthStore()
     border-left: 4px solid #3b82f6;
     padding: 10px 12px;
     border-radius: 10px;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     font-weight: 500;
     cursor: default;
     color: #0f172a;
