@@ -219,8 +219,8 @@ onBeforeUnmount(() => {
     visibility: visible;
 }
 .preview-block.highlight {
-    background: #fef9c3;
-    border-left: 4px solid #eab308;
+    background: #f1f5f9;
+    border-left: 4px solid #3b82f6;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 .preview-title h1 {
