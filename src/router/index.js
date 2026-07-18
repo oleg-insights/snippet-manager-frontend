@@ -16,7 +16,7 @@ const checkTemplateAccess = async (to, from, { requiresAuth = false } = {}) => {
         if (!template) return { path: '/' }
         if (template.isPublic && !requiresAuth) return true
         if (!authStore.user) return { path: '/' }
-        if (authStore.user?.id !== template.author.id) return { path: '/' }
+        if (authStore.user?.id !== template.author.id && authStore.user?.role !== 'ADMIN') return { path: '/' }
 
         return true
     } catch (err) {
