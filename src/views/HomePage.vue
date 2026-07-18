@@ -51,10 +51,11 @@ watch(
 
 <style scoped>
 .content-wrapper {
+    flex: 1;
     display: flex;
     flex-direction: column;
+    min-height: 0;
     gap: 20px;
-    flex: 1;
 }
 
 /* Две колонки */
