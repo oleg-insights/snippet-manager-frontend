@@ -128,7 +128,7 @@ watch(
 )
 
 onMounted(async () => {
-    await tagsStore.getTags({ sortBy: 'name', order: 'asc' })
+    await tagsStore.getTags({ limit: 0, sortBy: 'name', order: 'asc' })
     visibleTags.value = tagsStore.tags
 
     const current = templatesStore.currentTemplate
