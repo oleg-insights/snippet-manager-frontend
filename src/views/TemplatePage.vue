@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import { useTemplatesStore } from '@/stores/templates'
@@ -106,6 +106,16 @@ watch(
     },
     { immediate: true }
 )
+
+onMounted(() => {
+    template.value.content = template.value.content.map((block) => {
+        // Корректные скобки и амперсанды на странице шаблона
+        if (block.type === 'code' && block.data) {
+            block.data = block.data.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+        }
+        return block
+    })
+})
 </script>
 
 <template>

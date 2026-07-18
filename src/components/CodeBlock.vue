@@ -8,7 +8,7 @@ import xml from 'highlight.js/lib/languages/xml' // HTML
 import css from 'highlight.js/lib/languages/css'
 import 'highlight.js/styles/github.css'
 
-defineProps({
+const props = defineProps({
     block: Object
 })
 
