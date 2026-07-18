@@ -234,14 +234,6 @@ watch(
 .preview-title {
     margin-bottom: 0.1rem;
 }
-.preview-title h1 {
-    font-size: 1.25rem;
-    font-weight: 700;
-}
-.preview-subtitle h2 {
-    font-size: 1.1rem;
-    font-weight: 600;
-}
 .preview-text {
     font-size: 1rem;
     line-height: 1.25;

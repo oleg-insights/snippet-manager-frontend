@@ -223,14 +223,6 @@ onBeforeUnmount(() => {
     border-left: 4px solid #3b82f6;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
-.preview-title h1 {
-    font-size: 1.25rem;
-    font-weight: 700;
-}
-.preview-subtitle h2 {
-    font-size: 1.1rem;
-    font-weight: 600;
-}
 .preview-text {
     font-size: 1rem;
     line-height: 1.25;
