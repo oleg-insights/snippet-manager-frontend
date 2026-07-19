@@ -6,6 +6,7 @@ import javascript from 'highlight.js/lib/languages/javascript'
 import typescript from 'highlight.js/lib/languages/typescript'
 import xml from 'highlight.js/lib/languages/xml' // HTML
 import css from 'highlight.js/lib/languages/css'
+import bash from 'highlight.js/lib/languages/bash'
 import 'highlight.js/styles/github.css'
 
 const props = defineProps({
@@ -16,10 +17,16 @@ hljs.registerLanguage('javascript', javascript)
 hljs.registerLanguage('typescript', typescript)
 hljs.registerLanguage('xml', xml)
 hljs.registerLanguage('css', css)
+hljs.registerLanguage('bash', bash)
 
 const codeHighlight = (block) => {
     let raw = block.data.trim()
     raw = block.data.trim().replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+
+    if (/^(sudo|docker|git|npm|yarn|npx|apt|systemctl|pm2)/.test(raw)) {
+        return hljs.highlight(raw, { language: 'bash' })
+    }
+
     const result = hljs.highlightAuto(raw)
     return result
 }
