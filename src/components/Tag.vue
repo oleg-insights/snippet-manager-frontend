@@ -2,7 +2,8 @@
 const props = defineProps({
     tag: Object,
     selected: Boolean,
-    disabled: Boolean
+    disabled: Boolean,
+    highlight: Boolean
 })
 
 const emit = defineEmits(['toggleTag'])
@@ -14,7 +15,7 @@ const handleClick = () => {
 </script>
 
 <template>
-    <span @click="handleClick" class="tag" :class="{ selected, disabled }">{{ tag.name }}</span>
+    <span @click="handleClick" class="tag" :class="{ selected, disabled, highlight }">{{ tag.name }}</span>
 </template>
 
 <style scoped>
@@ -29,6 +30,8 @@ const handleClick = () => {
     border: 1px solid #cfdfed;
     color: #1f3a5f;
     cursor: pointer;
+    display: inline-block;
+    position: relative;
 }
 /* Обычные кликабельные теги (3-й и 4-й) */
 .tag:not(.selected):not(.disabled):hover {
@@ -49,5 +52,22 @@ const handleClick = () => {
     border-color: #cbd5e1;
     color: #64748b;
     cursor: not-allowed;
+}
+/* Подсветка дочерних тегов */
+.tag.highlight::before,
+.tag.highlight::after {
+    content: '';
+    position: absolute;
+    background: #fd9eb0d6;
+    width: 8px;
+    height: 2px;
+    top: 50%;
+    left: 8px;
+}
+.tag.highlight::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+.tag.highlight::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
 }
 </style>

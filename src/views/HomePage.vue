@@ -1,5 +1,5 @@
 <script setup>
-import { watch } from 'vue'
+import { watch, ref } from 'vue'
 import { useTemplatesStore } from '@/stores/templates'
 import { useTagsStore } from '@/stores/tags'
 import { useAuthStore } from '@/stores/auth'
@@ -12,12 +12,18 @@ const templatesStore = useTemplatesStore()
 const tagsStore = useTagsStore()
 const authStore = useAuthStore()
 
+const highlightedTagIds = ref([])
+
 const toggleTag = (tag) => {
     templatesStore.toggleTag(tag)
 }
 
 const selectParentTag = (parentTag) => {
     templatesStore.selectParentTag(parentTag)
+    highlightedTagIds.value = []
+}
+const toggleHighlightTags = (ids) => {
+    highlightedTagIds.value = ids ?? []
 }
 
 watch(
@@ -37,11 +43,11 @@ watch(
 <template>
     <div class="content-wrapper">
         <!-- Родительские теги -->
-        <ParentTagList @select-parent-tag="(tag) => selectParentTag(tag)" />
+        <ParentTagList @select-parent-tag="(tag) => selectParentTag(tag)" @toggle-highlight-tags="toggleHighlightTags" />
 
         <div class="columns">
             <!-- Левая колонка: теги -->
-            <TagList @toggle-tag="(tag) => toggleTag(tag)" />
+            <TagList :highlighted-tag-ids="highlightedTagIds" @toggle-tag="(tag) => toggleTag(tag)" />
 
             <!-- Правая колонка: шаблоны -->
             <TemplateList />

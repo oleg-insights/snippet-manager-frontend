@@ -5,6 +5,12 @@ import { useTagsStore } from '@/stores/tags'
 
 import Tag from '@/components/Tag.vue'
 
+const props = defineProps({
+    highlightedTagIds: Array
+})
+
+const emit = defineEmits(['toggle-tag'])
+
 const templatesStore = useTemplatesStore()
 const tagsStore = useTagsStore()
 
@@ -35,7 +41,9 @@ const displayedTags = computed(() => {
     return result
 })
 
-const emit = defineEmits(['toggle-tag'])
+const isChild = (tagId) => {
+    return props.highlightedTagIds.some((id) => id === tagId)
+}
 </script>
 
 <template>
@@ -48,6 +56,7 @@ const emit = defineEmits(['toggle-tag'])
                     :tag="tag"
                     :selected="tag.isSelected"
                     :disabled="tag.isDisabled"
+                    :highlight="isChild(tag.id)"
                     @toggle-tag="emit('toggle-tag', tag)"
                 />
             </div>

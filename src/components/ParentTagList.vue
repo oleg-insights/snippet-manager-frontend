@@ -6,13 +6,32 @@ const templatesStore = useTemplatesStore()
 
 const parents = computed(() => templatesStore.suggestedParents)
 
-const emit = defineEmits(['selectParentTag'])
+const emit = defineEmits(['selectParentTag', 'toggle-highlight-tags'])
+
+const highlightChildTagsOn = (e) => {
+    const idsDataset = e.target.dataset.childIds
+    const ids = idsDataset.split(',')
+    emit('toggle-highlight-tags', ids)
+}
+const highlightChildTagsOff = () => {
+    emit('toggle-highlight-tags', [])
+}
 </script>
 
 <template>
     <div v-if="parents.length" class="parent-tag-wrapper">
         <div class="parent-tag-list">
-            <span @click="emit('selectParentTag', parent)" v-for="parent in parents" :key="parent.id" class="parent-tag">{{ parent.name }}</span>
+            <span
+                @click="emit('selectParentTag', parent)"
+                @mouseover="highlightChildTagsOn"
+                @mouseleave="highlightChildTagsOff"
+                v-for="parent in parents"
+                :key="parent.id"
+                :data-child-ids="parent.childIds"
+                class="parent-tag"
+            >
+                {{ parent.name }}
+            </span>
         </div>
     </div>
 </template>
