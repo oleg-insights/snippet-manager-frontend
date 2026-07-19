@@ -139,15 +139,15 @@ const formattedDate = computed(() => {
                     <h3>Безопасность</h3>
                     <div class="form-group">
                         <label>Текущий пароль</label>
-                        <input type="text" class="old-password-field" placeholder="••••••••" v-model="password.old" />
+                        <input type="password" class="old-password-field" placeholder="••••••••" v-model="password.old" />
                     </div>
                     <div class="form-group">
                         <label>Новый пароль</label>
-                        <input type="text" class="new-password-field" placeholder="••••••••" v-model="password.new" />
+                        <input type="password" class="new-password-field" placeholder="••••••••" v-model="password.new" />
                     </div>
                     <div class="form-group">
                         <label>Подтверждение пароля</label>
-                        <input type="text" class="confirm-password-field" placeholder="••••••••" v-model="password.confirm" />
+                        <input type="password" class="confirm-password-field" placeholder="••••••••" v-model="password.confirm" />
                     </div>
                     <button @click="updatePassword" class="btn-secondary">
                         {{ usersStore.isUpdatingPassword ? 'Сохранение...' : '🔒 Сменить пароль' }}

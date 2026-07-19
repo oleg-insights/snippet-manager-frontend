@@ -13,7 +13,21 @@ const authStore = useAuthStore()
                 <router-link v-for="tpl in templatesStore.templates" :key="tpl.id" :to="`/template/${tpl.id}`" class="template-item">
                     <div>{{ tpl.title }}</div>
                     <div class="template-meta">
-                        <span class="template-meta-author">👤 {{ tpl.author.name }}</span>
+                        <span v-if="tpl.isPublic" class="template-meta-publish template-meta-item">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </span>
+                        <span v-else class="template-meta-unpublish template-meta-item">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                                <line x1="2" y1="2" x2="22" y2="22" />
+                            </svg>
+                        </span>
+
+                        <span class="template-meta-author template-meta-item">👤 {{ tpl.author.name }}</span>
                     </div>
                 </router-link>
             </div>
@@ -66,14 +80,23 @@ const authStore = useAuthStore()
     color: #0f172a;
     cursor: pointer;
 }
+.template-item:hover {
+    background: #f1f5f9;
+    transform: translateX(3px);
+}
 .template-meta {
     font-size: 0.6rem;
     color: #94a3b8;
     margin-top: 0.2rem;
+    display: flex;
+    gap: 0.25rem;
 }
-.template-item:hover {
-    background: #f1f5f9;
-    transform: translateX(3px);
+.template-meta-item {
+    display: flex;
+    align-items: center;
+}
+.template-meta-publish {
+    color: #8bc188;
 }
 
 /* Кастомный скролл */
