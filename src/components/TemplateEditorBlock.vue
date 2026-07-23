@@ -37,8 +37,8 @@ const toggleFocusId = (id) => {
 </script>
 
 <template>
-    <div class="block-wrapper">
-        <div class="editor-block" :ref="setRef" :class="{ highlight: synced }">
+    <div class="block-wrapper" :ref="setRef">
+        <div class="editor-block" :class="{ highlight: synced }">
             <!-- Блок -->
             <div class="editor-block-header" :class="{ 'multi-string': isTextarea }">
                 <span class="block-label">{{ (BLOCK_TYPES[block.type].label || block.type).toUpperCase() }}</span>
