@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue'
 import { BLOCK_TYPES } from '@/constants/block-types'
 
 import BlockPicker from './BlockPicker.vue'
@@ -12,6 +13,21 @@ const props = defineProps({
     synced: Boolean
 })
 const emit = defineEmits(['add-block', 'move-block', 'del-block', 'toggle-picker', 'toggle-focus-id', 'focus-out'])
+
+const isTextarea = props.block.type === 'text' || props.block.type === 'code'
+const minRows = 1
+const maxRows = 20
+const textareaRows = ref(2)
+
+const rowsUp = () => {
+    if (textareaRows.value >= maxRows) return
+    textareaRows.value++
+}
+
+const rowsDown = () => {
+    if (textareaRows.value <= minRows) return
+    textareaRows.value--
+}
 
 const togglePicker = (block) => {
     emit('toggle-picker', block)
@@ -34,8 +50,13 @@ const toggleFocusId = (id) => {
     <div class="block-wrapper">
         <div class="editor-block" :ref="setRef" :class="{ highlight: synced }">
             <!-- Блок -->
-            <div class="editor-block-header">
+            <div class="editor-block-header" :class="{ 'multi-string': isTextarea }">
                 <span class="block-label">{{ (BLOCK_TYPES[block.type].label || block.type).toUpperCase() }}</span>
+                <div v-if="isTextarea" class="header-slider">
+                    <span class="min">1</span>
+                    <input type="range" min="1" max="20" v-model="textareaRows" step="1" />
+                    <span class="max">20</span>
+                </div>
                 <div v-if="block.type !== 'title'" class="editor-buttons">
                     <button v-if="canMoveUp" class="editor-btn move-btn move-up-btn" @click="$emit('move-block', index, -1)">▲</button>
                     <button v-if="canMoveDown" class="editor-btn move-btn move-down-btn" @click="$emit('move-block', index, 1)">▼</button>
@@ -63,7 +84,7 @@ const toggleFocusId = (id) => {
                     v-else-if="block.type === 'text' || block.type === 'code'"
                     @focus="toggleFocusId(block.id)"
                     @blur="emit('focus-out')"
-                    rows="2"
+                    :rows="textareaRows"
                     v-model="block.data"
                     placeholder="Текст"
                 ></textarea>
@@ -77,7 +98,7 @@ const toggleFocusId = (id) => {
 <style scoped>
 /* Блоки редактора (поля) */
 textarea {
-    resize: vertical;
+    resize: none;
 }
 
 .editor-block {
@@ -102,11 +123,12 @@ textarea {
 .editor-buttons {
     display: flex;
     gap: 4px;
+    width: 8rem;
+    justify-content: flex-end;
 }
 .editor-btn {
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    /* padding: 2px 6px; */
     cursor: pointer;
     font-size: 0.7rem;
     transition: 0.1s;
@@ -118,6 +140,9 @@ textarea {
 }
 .move-btn:hover {
     background: #e2e8f0;
+}
+.move-up-btn {
+    margin-left: 1rem;
 }
 .del-btn {
     background: #ff9aad;
@@ -152,5 +177,77 @@ textarea {
 .highlight input,
 .highlight textarea {
     box-shadow: 0 0 0 3px #3b82f633;
+}
+
+/* Ползунок высоты */
+
+.multi-string.editor-block-header {
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header-slider {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.header-slider span {
+    color: #475569;
+    min-width: 1.2rem;
+    line-height: 1;
+    font-size: 0.75rem;
+}
+
+.header-slider span.min {
+    text-align: right;
+}
+
+input[type='range'] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    height: 3px;
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+    height: 3px;
+    background: #cfdfed;
+    border-radius: 4px;
+}
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    margin-top: -5.5px;
+}
+input[type='range']::-moz-range-track {
+    height: 3px;
+    background: #cfdfed;
+    border-radius: 4px;
+}
+input[type='range']::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    border: none;
+}
+input[type='range']:focus {
+    outline: none;
+}
+input[type='range']:focus::-webkit-slider-runnable-track {
+    background: #cfdfed;
+}
+input[type='range']:focus::-moz-range-track {
+    background: #cfdfed;
 }
 </style>
