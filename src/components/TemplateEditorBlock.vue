@@ -19,16 +19,6 @@ const minRows = 1
 const maxRows = 20
 const textareaRows = ref(2)
 
-const rowsUp = () => {
-    if (textareaRows.value >= maxRows) return
-    textareaRows.value++
-}
-
-const rowsDown = () => {
-    if (textareaRows.value <= minRows) return
-    textareaRows.value--
-}
-
 const togglePicker = (block) => {
     emit('toggle-picker', block)
 }
